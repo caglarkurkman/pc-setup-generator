@@ -7,6 +7,8 @@ import { TweaksPanel } from "@/components/tweaks/tweaks-panel";
 import { SummaryBar } from "@/components/summary/summary-bar";
 import { apps } from "@/data/apps";
 import { tweaks } from "@/data/tweaks";
+import { presets } from "@/data/presets";
+import { Preset } from "@/types";
 
 export default function Home() {
   const [selectedAppIds, setSelectedAppIds] = useState<Set<string>>(new Set());
@@ -28,12 +30,18 @@ export default function Home() {
     });
   };
 
+  // Preset butonuna basıldığında mevcut seçimin üzerine yazar
+  const applyPreset = (preset: Preset) => {
+    setSelectedAppIds(new Set(preset.appIds));
+    setEnabledTweakIds(new Set(preset.tweakIds));
+  };
+
   const selectedApps = apps.filter((app) => selectedAppIds.has(app.id));
   const selectedTweaks = tweaks.filter((tweak) => enabledTweakIds.has(tweak.id));
 
   return (
     <main className="pb-24">
-      <SiteHeader />
+      <SiteHeader presets={presets} onApplyPreset={applyPreset} />
       <section className="mx-auto max-w-5xl px-4 py-10">
         <h2 className="mb-4 text-2xl font-semibold">Uygulamalar</h2>
         <AppGrid selectedIds={selectedAppIds} onToggle={toggleApp} />

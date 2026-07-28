@@ -1,6 +1,12 @@
 import { Button } from "@/components/ui/button";
+import { Preset } from "@/types";
 
-export function SiteHeader() {
+interface SiteHeaderProps {
+  presets: Preset[];
+  onApplyPreset: (preset: Preset) => void;
+}
+
+export function SiteHeader({ presets, onApplyPreset }: SiteHeaderProps) {
   return (
     <header className="border-b">
       <div className="mx-auto flex max-w-3xl flex-col items-center gap-6 px-4 py-16 text-center">
@@ -14,11 +20,12 @@ export function SiteHeader() {
           </p>
         </div>
 
-        {/* Fonksiyonelliği FAZ 4'te bağlanacak, şimdilik sadece görsel */}
         <div className="flex flex-wrap justify-center gap-3">
-          <Button variant="outline">Geliştirici Profili</Button>
-          <Button variant="outline">Oyuncu Profili</Button>
-          <Button variant="outline">Ofis Profili</Button>
+          {presets.map((preset) => (
+            <Button key={preset.id} variant="outline" onClick={() => onApplyPreset(preset)}>
+              {preset.name}
+            </Button>
+          ))}
         </div>
       </div>
     </header>
