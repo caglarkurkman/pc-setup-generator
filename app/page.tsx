@@ -6,6 +6,7 @@ import { AppGrid } from "@/components/apps/app-grid";
 import { TweaksPanel } from "@/components/tweaks/tweaks-panel";
 import { SummaryBar } from "@/components/summary/summary-bar";
 import { apps } from "@/data/apps";
+import { tweaks } from "@/data/tweaks";
 
 export default function Home() {
   const [selectedAppIds, setSelectedAppIds] = useState<Set<string>>(new Set());
@@ -28,6 +29,7 @@ export default function Home() {
   };
 
   const selectedApps = apps.filter((app) => selectedAppIds.has(app.id));
+  const selectedTweaks = tweaks.filter((tweak) => enabledTweakIds.has(tweak.id));
 
   return (
     <main className="pb-24">
@@ -44,6 +46,7 @@ export default function Home() {
         appCount={selectedAppIds.size}
         tweakCount={enabledTweakIds.size}
         selectedApps={selectedApps}
+        selectedTweaks={selectedTweaks}
       />
     </main>
   );

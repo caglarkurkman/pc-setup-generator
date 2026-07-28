@@ -1,4 +1,4 @@
-import { App } from "@/types";
+import { App, Tweak } from "@/types";
 
 export const ELEVATION_HEADER = `# ============================================
 # PC Setup Generator - Otomatik Kurulum Script'i
@@ -30,4 +30,20 @@ export function buildWingetSection(selectedApps: App[]): string {
     .join("\n\n");
 
   return `${header}\n${installCommands}\n`;
+}
+
+// Her tweak'in kendi psCommand'ini script'e sıralı şekilde gömer
+export function buildTweaksSection(selectedTweaks: Tweak[]): string {
+  if (selectedTweaks.length === 0) return "";
+
+  const header = `\nWrite-Host "Sistem ayarlari uygulaniyor..." -ForegroundColor Cyan\n`;
+
+  const tweakCommands = selectedTweaks
+    .map(
+      (tweak) =>
+        `Write-Host "Uygulaniyor: ${tweak.title}" -ForegroundColor Yellow\n${tweak.psCommand}`
+    )
+    .join("\n\n");
+
+  return `${header}\n${tweakCommands}\n`;
 }

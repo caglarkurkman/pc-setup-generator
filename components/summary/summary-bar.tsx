@@ -1,27 +1,32 @@
 import { Button } from "@/components/ui/button";
 import { generateScript } from "@/lib/script-generator/generate-script";
-import { App } from "@/types";
+import { downloadScript } from "@/lib/script-generator/download-script";
+import { App, Tweak } from "@/types";
 
 interface SummaryBarProps {
-    appCount: number;
-    tweakCount: number;
-    selectedApps: App[];
+  appCount: number;
+  tweakCount: number;
+  selectedApps: App[];
+  selectedTweaks: Tweak[];
 }
 
-export function SummaryBar({ appCount, tweakCount, selectedApps }: SummaryBarProps) {
-    return (
-        <div className="fixed inset-x-0 bottom-0 border-t bg-background/95 backdrop-blur">
-            <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
-                <p className="text-sm text-muted-foreground">
-                    <span className="font-semibold text-foreground">{appCount}</span> uygulama,{" "}
-                    <span className="font-semibold text-foreground">{tweakCount}</span> ayar seçildi
-                </p>
-                <Button
-                    disabled={appCount === 0 && tweakCount === 0}
-                    onClick={() => console.log(generateScript({ selectedApps }))}        >
-                    Script'i İndir
-                </Button>
-            </div>
-        </div>
-    );
+export function SummaryBar({ appCount, tweakCount, selectedApps, selectedTweaks }: SummaryBarProps) {
+  const handleDownload = () => {
+    const script = generateScript({ selectedApps, selectedTweaks });
+    downloadScript(script, "setup.ps1");
+  };
+
+  return (
+    <div className="fixed inset-x-0 bottom-0 border-t bg-background/95 backdrop-blur">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
+        <p className="text-sm text-muted-foreground">
+          <span className="font-semibold text-foreground">{appCount}</span> uygulama,{" "}
+          <span className="font-semibold text-foreground">{tweakCount}</span> ayar seçildi
+        </p>
+        <Button disabled={appCount === 0 && tweakCount === 0} onClick={handleDownload}>
+          Script'i İndir
+        </Button>
+      </div>
+    </div>
+  );
 }
