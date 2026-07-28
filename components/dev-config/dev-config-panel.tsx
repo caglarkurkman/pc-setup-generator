@@ -31,7 +31,7 @@ export function DevConfigPanel({ devConfig, onChange }: DevConfigPanelProps) {
             <Label htmlFor="git-name">Git Kullanıcı Adı</Label>
             <Input
               id="git-name"
-              placeholder="Ör: Çağlar Kürkman"
+              
               value={devConfig.gitUserName}
               onChange={(e) => onChange({ ...devConfig, gitUserName: e.target.value })}
             />
@@ -41,7 +41,7 @@ export function DevConfigPanel({ devConfig, onChange }: DevConfigPanelProps) {
             <Input
               id="git-email"
               type="email"
-              placeholder="Ör: caglar@example.com"
+            
               value={devConfig.gitUserEmail}
               onChange={(e) => onChange({ ...devConfig, gitUserEmail: e.target.value })}
             />
