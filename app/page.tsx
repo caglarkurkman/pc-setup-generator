@@ -5,11 +5,13 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { AppGrid } from "@/components/apps/app-grid";
 import { TweaksPanel } from "@/components/tweaks/tweaks-panel";
 import { DevConfigPanel } from "@/components/dev-config/dev-config-panel";
+import { ConfigIoBar } from "@/components/config-io/config-io-bar";
 import { SummaryBar } from "@/components/summary/summary-bar";
 import { apps } from "@/data/apps";
 import { tweaks } from "@/data/tweaks";
 import { presets } from "@/data/presets";
-import { DevConfig, Preset } from "@/types";
+import { exportConfig } from "@/lib/config-io/export-config";
+import { DevConfig, Preset, SavedConfig } from "@/types";
 
 const emptyDevConfig: DevConfig = {
   gitUserName: "",
@@ -43,12 +45,27 @@ export default function Home() {
     setEnabledTweakIds(new Set(preset.tweakIds));
   };
 
+  const handleExport = () => {
+    exportConfig({
+      selectedAppIds: Array.from(selectedAppIds),
+      enabledTweakIds: Array.from(enabledTweakIds),
+      devConfig,
+    });
+  };
+
+  const handleImport = (config: SavedConfig) => {
+    setSelectedAppIds(new Set(config.selectedAppIds));
+    setEnabledTweakIds(new Set(config.enabledTweakIds));
+    setDevConfig(config.devConfig);
+  };
+
   const selectedApps = apps.filter((app) => selectedAppIds.has(app.id));
   const selectedTweaks = tweaks.filter((tweak) => enabledTweakIds.has(tweak.id));
 
   return (
     <main className="pb-24">
       <SiteHeader presets={presets} onApplyPreset={applyPreset} />
+      <ConfigIoBar onExport={handleExport} onImport={handleImport} />
       <section className="mx-auto max-w-5xl px-4 py-10">
         <h2 className="mb-4 text-2xl font-semibold">Uygulamalar</h2>
         <AppGrid selectedIds={selectedAppIds} onToggle={toggleApp} />
