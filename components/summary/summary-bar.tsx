@@ -1,18 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { generateScript } from "@/lib/script-generator/generate-script";
 import { downloadScript } from "@/lib/script-generator/download-script";
-import { App, Tweak } from "@/types";
+import { App, Tweak, DevConfig } from "@/types";
 
 interface SummaryBarProps {
   appCount: number;
   tweakCount: number;
   selectedApps: App[];
   selectedTweaks: Tweak[];
+  devConfig: DevConfig;
 }
 
-export function SummaryBar({ appCount, tweakCount, selectedApps, selectedTweaks }: SummaryBarProps) {
+export function SummaryBar({ appCount, tweakCount, selectedApps, selectedTweaks, devConfig }: SummaryBarProps) {
   const handleDownload = () => {
-    const script = generateScript({ selectedApps, selectedTweaks });
+    const script = generateScript({ selectedApps, selectedTweaks, devConfig });
     downloadScript(script, "setup.ps1");
   };
 
